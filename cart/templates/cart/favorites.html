@@ -1,0 +1,85 @@
+{% extends 'wrapper.html' %}
+{%load static %}
+{% load i18n %}
+{% block content %}
+
+<body>
+<!-- Header -->
+{% include 'header.html' %}
+
+<!--================Cart Area =================-->
+    <section class="cart_area">
+        <div class="container">
+            <div class="cart_inner">
+                <div class="table-responsive">
+                    <form action="{% url 'cart:buy' %}" method="post">
+                        {% csrf_token %}
+                        <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">{% trans 'Товары' %}</th>
+                                <th scope="col">{% trans 'Цена' %}</th>
+                                <th scope="col">{% trans 'Количество' %}</th>
+                                <th scope="col">{% trans 'Сумма' %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in cart %}
+                        
+                            {% with product=item.product %}
+                            {{ item.product.name }} - {{ item.quantity }}
+                            {{ form.quantity }}
+                            {{ form.update }}
+                            <tr>
+                                <td>
+                                    <div class="media">
+                                        <div class="d-flex">
+                                            <img src="{{ product.img.url }}" width="150" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <p>{{product.name}}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if product.discount %}
+                                        <h5>$ {{product.discount_price}}</h5>
+                                    {% else %}
+                                        <h5>$ {{product.price}}</h5>
+                                    {%endif%}
+                                </td>
+                                <td>
+                                    <div class="product_count">
+                                        <button class="number-minus" type="button" onclick="this.nextElementSibling.stepDown(); this.nextElementSibling.onchange();">-</button>
+                                        <input type="number" name="qty_{{ product.id }}" min="0" value="{{item.quantity}}" readonly>
+                                        <button class="number-plus" type="button" onclick="this.previousElementSibling.stepUp(); this.previousElementSibling.onchange();">+</button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <h5>$ {{ item.total_price }}</h5>
+                                </td>
+                            </tr>
+                            {% endwith %}
+                        {% endfor %}
+                            <tr class="bottom_button">
+                                <td>
+                                    <button type="submit" class="button">{% trans 'Оплатить' %}</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Cart Area =================-->
+
+
+{% include 'footer.html' %}
+ <!--================ End footer Area  =================-->
+
+
+</body>
+
+{%endblock%}

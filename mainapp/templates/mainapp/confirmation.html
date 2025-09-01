@@ -1,0 +1,162 @@
+{% extends 'wrapper.html' %}
+{%load static %}
+{% load i18n %}
+{% block content %}
+
+<body>
+<!-- Header -->
+{% include 'header.html' %}
+
+<!-- ================ start banner area ================= -->
+    <section class="blog-banner-area" id="category">
+        <div class="container h-100">
+            <div class="blog-banner">
+                <div class="text-center">
+                    <h1>{% trans 'Ваш заказ на этапе доставки' %}</h1>
+                    <nav aria-label="breadcrumb" class="banner-breadcrumb">
+                        <ol class="breadcrumb">
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ================ end banner area ================= -->
+
+    <!--================Order Details Area =================-->
+    <section class="order_details section-margin--small">
+        <div class="container">
+            <p class="text-center billing-alert">{% trans 'Общая информация по заказу' %}</p>
+            <div class="row mb-5">
+                <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
+                    <div class="confirmation-card">
+                        <h3 class="billing-title">{% trans 'Общая информация' %}</h3>
+                        <table class="order-rable">
+                            <tr>
+                                <td>{% trans 'Дата заказа' %}</td>
+                                <td>: Oct 03, 2017</td>
+                            </tr>
+                            <tr>
+                                <td>{% trans 'Сумма заказа' %}</td>
+                                <td>: USD 2210</td>
+                            </tr>
+                            <tr>
+                                <td{% trans 'Метод оплаты' %}></td>
+                                <td>: Check payments</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
+                    <div class="confirmation-card">
+                        <h3 class="billing-title"{% trans 'Адресс доставки' %}></h3>
+                        <table class="order-rable">
+                            <tr>
+                                <td>{% trans 'Город' %}</td>
+                                <td>: Dhaka</td>
+                            </tr>
+                            <tr>
+                                <td>{% trans 'Страна' %}</td>
+                                <td>: Bangladesh</td>
+                            </tr>
+                            <tr>
+                                <td>{% trans 'Почтовый индекс' %}</td>
+                                <td>: 1205</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="order_details_table">
+                <h2>{% trans 'Детали заказа' %}</h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">{% trans 'Продукт' %}</th>
+                                <th scope="col">{% trans 'Кол-во' %}</th>
+                                <th scope="col">{% trans 'Сумма' %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>Статуэтка афанди</p>
+                                </td>
+                                <td>
+                                    <h5>x 02</h5>
+                                </td>
+                                <td>
+                                    <p>$720.00</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Статуэтка афанди</p>
+                                </td>
+                                <td>
+                                    <h5>x 02</h5>
+                                </td>
+                                <td>
+                                    <p>$720.00</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Статуэтка афанди</p>
+                                </td>
+                                <td>
+                                    <h5>x 02</h5>
+                                </td>
+                                <td>
+                                    <p>$720.00</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h4>{% trans 'Общая сумма' %}</h4>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <p>$2160.00</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h4>{% trans 'Доставка' %}</h4>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <p>50$</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h4>{% trans 'Общая сумма с доставкой' %}</h4>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <h4>$2210.00</h4>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Order Details Area =================-->
+
+{% include 'footer.html' %}
+ <!--================ End footer Area  =================-->
+
+
+</body>
+
+{%endblock%}

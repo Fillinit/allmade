@@ -1,0 +1,57 @@
+{% extends 'wrapper.html' %}
+{%load static %}
+{% load i18n %}
+{% block content %}
+
+<body>
+<!-- Header -->
+{% include 'header.html' %}
+
+<!--================Login Box Area =================-->
+    <section class="login_box_area section-margin">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="login_box_img">
+                        <div class="hover">
+                            <h4>{% trans 'У вас нет аккаунта?' %}</h4>
+                            <p>{% trans 'Зарегестрируйтесь в нашем сайте' %}</p>
+                            <a class="button button-account" href="{% url 'mainapp:register'%}">{% trans 'Создать профиль' %}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="login_form_inner">
+                        <h3>{% trans 'Войдите' %}</h3>
+                        <form class="row login_form" action="{% url 'mainapp:login_in'%}" id="contactForm" method="post">
+                            {% csrf_token %}
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="name" name="username" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="name" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+                            </div>
+                            {% comment %} <div class="col-md-12 form-group">
+                                <div class="creat_account">
+                                    <input type="checkbox" id="f-option2" name="selector">
+                                    <label for="f-option2">{% trans 'Подверждаю обработку моих данных' %}</label>
+                                </div>
+                            </div> {% endcomment %}
+                            <div class="col-md-12 form-group">
+                                <button type="submit" value="submit" class="button button-login w-100">{% trans 'Войти в аккаунт' %}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Login Box Area =================-->
+
+{% include 'footer.html' %}
+ <!--================ End footer Area  =================-->
+
+
+</body>
+
+{%endblock%}

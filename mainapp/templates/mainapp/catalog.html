@@ -1,0 +1,162 @@
+{% extends 'wrapper.html' %}
+{%load static %}
+{% load i18n %}
+{% block content %}
+
+<body>
+<!-- Header -->
+{% include 'header.html' %}
+
+<!-- ================ category section start ================= -->
+<section class="section-margin--small mb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-3 col-lg-4 col-md-5">
+                <div class="sidebar-categories">
+                    <div class="head">{% trans 'Категория товаров' %}</div>
+
+                    <ul class="main-categories">
+                        {% for category in category_information %}
+                        <li class="common-filter">
+                            <form action="{% url 'mainapp:filter_product' category.slug %}" method="post">
+                                {% csrf_token %}
+                                <input class="pixel-radio" type="submit" id="cat-{{ category.id }}" name="brand" value="{{ category.name }}">
+                                <label for="cat-{{ category.id }}" class="category-label">{{ category.name }}</label>
+                            </form>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+
+            </div>
+            <div class="col-xl-9 col-lg-8 col-md-7">
+                <!-- Start Filter Bar -->
+                <div class="filter-bar d-flex flex-wrap align-items-center">
+                    <form action="{% url 'mainapp:search' %}" method="post">
+                            <div>
+                                    <div class="input-group filter-bar-search">
+
+                                             {% csrf_token %}
+                                        <input type="text" name="name" placeholder="{% trans 'Поиск товаров' %}">
+                                        <div class="input-group-append">
+                                            <button type="button"><i class="ti-search"></i></button>
+                                        </div>
+                                        <button type="submit" style="border: 1px solid grey; margin-left: 10px; outline: none; background-color: white; padding: 5px 30px; ">{% trans 'Поиск' %}</button>
+
+                                    </div>
+                            </div>
+                    </form>
+                </div>
+
+                <!-- End Filter Bar -->
+                <!-- Start Best Seller -->
+                <section class="lattest-product-area pb-40 category-list">
+                    <div class="row">
+                        
+                        {% for product_info in product_information%}
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card text-center card-product">
+                                <div class="card-product__img">
+                                    <img class="card-img" src="{{ product_info.img.url }}" alt="">
+                                    <ul class="card-product__imgOverlay">
+                                        <li>
+                                            <form action="{% url 'cart:cart_add_2' product_info.id %}" method="post">
+                                                <input type="hidden" name="quantity" id="sst" size="2" maxlength="12" value="1" title="Quantity:" class="input-text qty">
+                                                {% csrf_token %}
+                                                <button type="submit"><i class="ti-shopping-cart"></i></button>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form action="{% url 'cart:cart_add' product_info.id %}" method="post">
+                                                    <input type="hidden" name="quantity" id="sst" size="2" maxlength="12" value="1" title="Quantity:" class="input-text qty">
+                                                    {% csrf_token %}
+                                                    <button><i class="ti-heart"></i></button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <p>{{product_info.category.name}}</p>
+                                    <h4 class="card-product__title"><a
+                                            href="{% url 'mainapp:single_product' product_info.category.slug product_info.pk %}">
+                                        {{ product_info.name }}</a></h4>
+                                    {% if product_info.discount %}
+                                    <p class="card-product__price">$ {{product_info.discount_price}}</p>
+                                    {% else %}
+                                    <p class="card-product__price">$ {{product_info.price}}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                </section>
+                <!-- End Best Seller -->
+                {% if product_information.count == 0 %}
+                <h1 style="font-size: 21px;">{% trans 'По вашему запросу ничего не нашлось!' %}</h1>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ================ category section end ================= -->
+
+<!-- ================ top product area start ================= -->
+<section class="related-product-area">
+    <div class="container">
+        <div class="section-intro pb-60px">
+            <p>{% trans 'Популярные товары в Магазине' %}</p>
+            <h2>{% trans 'Давайте ' %} <span class="section-intro__style">{% trans 'Глянем' %}</span></h2>
+        </div>
+        <div class="row mt-30">
+            {%for product in product_views %}
+            <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
+                <div class="single-search-product-wrapper">
+                    <div class="single-search-product d-flex">
+                        <a href="{% url 'mainapp:single_product' product.category.slug product.pk %}"><img src="{{product.img.url}}" alt=""></a>
+                        <div class="desc">
+                            <a href="{% url 'mainapp:single_product' product.category.slug product.pk %}" class="title">{{product.name}}</a>
+                            {% if product.discount %}
+                            <div class="price">${{product.discount_price}}</div>
+                            {% else %}
+                            <div class="price">${{product.price}}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!-- ================ top product area end ================= -->
+
+<!-- ================ Subscribe section start ================= -->
+<section class="subscribe-position">
+    <div class="container">
+        <div class="subscribe text-center">
+            <h3 class="subscribe__title">{% trans 'Оставьте свой номер!' %}</h3>
+            <p>{% trans 'Мы позвоним и проконсультируем вас' %}</p>
+            <div>
+                <form action="{% url 'mainapp:call_msg' %}" method="post" class="subscribe-form form-inline mt-5 pt-1">
+                    {% csrf_token %}
+                    <div class="form-group ml-sm-auto">
+                        <input class="form-control mb-1" type="tel" name="phone" placeholder="{% trans 'Номер телефона' %}" required>
+                    </div>
+                    <button class="button button-subscribe mr-auto mb-1" type="submit">{% trans 'Отправить' %}</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- ================ Subscribe section end ================= -->
+
+
+{% include 'footer.html' %}
+<!--================ End footer Area  =================-->
+
+
+</body>
+
+{%endblock%}

@@ -1,0 +1,70 @@
+{% extends 'wrapper.html' %}
+{%load static %}
+{% load i18n %}
+{% block content %}
+
+<body>
+<!-- Header -->
+{% include 'header.html' %}
+
+ <!--================Login Box Area =================-->
+    <section class="login_box_area section-margin">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="login_box_img">
+                        <div class="hover">
+                            <h4>{% trans 'У вас уже есть аккаунт?' %}</h4>
+                            <p>{% trans 'Войдите в аккаунт отсюда' %}</p>
+                            <a class="button button-account" href="{%url 'mainapp:login_in' %}">{% trans 'Войти в аккаунт' %}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="login_form_inner register_form_inner">
+                        <h3>{% trans 'Создать аккаунт' %}</h3>
+                        <form class="row login_form" action="{% url 'mainapp:register'%}" id="register_form" method="post">
+                            {% csrf_token %}
+
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="name_fio" name="name_fio" placeholder="Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name'">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="Surname" name="surname" placeholder="Surname" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Surname'">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="name" name="username" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address'">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input type="text" class="form-control" id="confirmPassword" name="password2" placeholder="Confirm Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Confirm Password'">
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <div class="creat_account">
+                                    <input type="checkbox" id="f-option2" name="selector">
+                                    <label for="f-option2">{% trans 'Запомнить меня' %}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <button type="submit" value="submit" class="button button-register w-100">{% trans 'Зарегестрироваться' %}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Login Box Area =================-->
+
+{% include 'footer.html' %}
+ <!--================ End footer Area  =================-->
+
+
+</body>
+
+{%endblock%}

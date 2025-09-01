@@ -1,0 +1,170 @@
+{% extends 'wrapper.html' %}
+{%load static %}
+{% load i18n %}
+{% block content %}
+
+<body>
+<!-- Header -->
+{% include 'header.html' %}
+
+ <section class="blog_categorie_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-lg-4 mb-4 mb-lg-0">
+                    <div class="categories_post">
+                        <img class="card-img rounded-0" src="{% static 'img/eeeee1.jpg' %}" alt="post">
+                        <div class="categories_details">
+                            <div class="categories_text">
+                                <a>
+                                    <h5>{% trans 'Богатая история' %}</h5>
+                                </a>
+                                <div class="border_line"></div>
+                                <p>{% trans 'В памяти на вечно' %}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-4 mb-lg-0">
+                    <div class="categories_post">
+                        <img class="card-img rounded-0" src="{% static 'img/eeeee1.jpg' %}" alt="post">
+                        <div class="categories_details">
+                            <div class="categories_text">
+                                <a>
+                                    <h5>{% trans 'Богатая история' %}</h5>
+                                </a>
+                                <div class="border_line"></div>
+                                <p>{% trans 'В памяти на вечно' %}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4 mb-4 mb-lg-0">
+                    <div class="categories_post">
+                        <img class="card-img rounded-0" src="{% static 'img/eeeee1.jpg' %}" alt="post">
+                        <div class="categories_details">
+                            <div class="categories_text">
+                                <a>
+                                    <h5>{% trans 'Богатая история' %}</h5>
+                                </a>
+                                <div class="border_line"></div>
+                                <p>{% trans 'В памяти на вечно' %}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================Blog Categorie Area =================-->
+
+    <!--================Blog Area =================-->
+ <section class="blog_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="blog_left_sidebar">
+                        {% for blog in page_obj %}
+                        <article class="row blog_item">
+
+                            <div class="col-md-9">
+                                <div class="blog_post">
+                                    <img src="{{blog.img.url}}" alt="post">
+                                    <div class="blog_details">
+                                        <a href="{% url 'mainapp:single_blog' blog.pk %}">
+                                            <h2>{{blog.title}}</h2>
+                                        </a>
+                                        <p>{{blog.short_description}}</p>
+                                        <a class="button button-blog" href="{% url 'mainapp:single_blog' blog.pk %}">{% trans 'Читать всё' %}</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </article>
+                        {% endfor %}
+                        <nav class="blog-pagination justify-content-center d-flex">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    {% if page_obj.has_previous %}
+                                    <a href="?page={{page_obj.previous_page_number }}" class="page-link" aria-label="Previous">
+                                        <span aria-hidden="true">
+                                          <span class="lnr lnr-chevron-left"></span>
+                                        </span>
+                                    </a>
+                                    {% endif%}
+                                </li>
+                                {% for page_number in page_obj.paginator.page_range%}
+                                {% if page_obj.number == page_number %}
+                                <li class="page-item">
+                                    <a href="?page={{page_number}}" class="page-link">{{ page_number }}</a>
+                                </li>
+                                {% else %}
+                                <li class="page-item">
+                                    <a href="?page={{page_number}}" class="page-link">{{ page_number }}</a>
+                                </li>
+                                {%endif%}
+                                {% endfor %}
+                                {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a href="?page={{page_obj.next_page_number }}" class="page-link" aria-label="Next">
+                                        <span aria-hidden="true">
+                                          <span class="lnr lnr-chevron-right"></span>
+                                        </span>
+                                    </a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="blog_right_sidebar">
+
+                        <aside class="single_sidebar_widget popular_post_widget">
+                            <h3 class="widget_title">{% trans 'Последние посты' %}</h3>
+                            {% for post in last_post %}
+                            <div class="media post_item">
+                                <img src="{{post.img.url}}" alt="post" width="80">
+                                <div class="media-body">
+                                    <a href="{% url 'mainapp:single_blog' post.pk %}">
+                                        <h3>{{post.title}}</h3>
+                                    </a>
+                                </div>
+                            </div>
+                            {%endfor%}
+                            <div class="br"></div>
+                        </aside>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================Blog Area =================-->
+
+
+<!--================Instagram Area =================-->
+    <section class="instagram_area">
+        <div class="container box_1620">
+            <div class="insta_btn">
+                <a class="btn theme_btn" href="#">{% trans 'Подпишитесь на нас в Инстаграме' %}</a>
+            </div>
+            <div class="instagram_image row m0">
+                <a href="#"><img src="{% static 'img/instagram/ins-1.jpg' %}" alt=""></a>
+                <a href="#"><img src="{% static 'img/instagram/ins-2.jpg' %}" alt=""></a>
+                <a href="#"><img src="{% static 'img/instagram/ins-3.jpg' %}" alt=""></a>
+                <a href="#"><img src="{% static 'img/instagram/ins-4.jpg' %}" alt=""></a>
+                <a href="#"><img src="{% static 'img/instagram/ins-5.jpg' %}" alt=""></a>
+                <a href="#"><img src="{% static 'img/instagram/ins-6.jpg' %}" alt=""></a>
+            </div>
+        </div>
+    </section>
+    <!--================End Instagram Area =================-->
+
+
+{% include 'footer.html' %}
+ <!--================ End footer Area  =================-->
+
+
+</body>
+
+{%endblock%}

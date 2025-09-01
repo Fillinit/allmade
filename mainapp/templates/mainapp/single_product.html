@@ -1,0 +1,335 @@
+{% extends 'wrapper.html' %}
+{%load static %}
+{% load i18n %}
+{% block content %}
+
+<body xmlns:cart="http://www.w3.org/1999/xhtml">
+<!-- Header -->
+{% include 'header.html' %}
+
+
+<div class="product_image_area">
+    <div class="container">
+        <div class="row s_product_inner">
+            <div class="col-lg-6">
+                <div class="owl-carousel owl-theme s_Product_carousel">
+                    <div class="single-prd-item">
+                        <img class="img-fluid" src="{{product_information.img.url}}" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 offset-lg-1">
+                <div class="s_product_text">
+                    <h3>{{product_information.name}}</h3>
+                    {% if product_information.discount %}
+                    <h2>$ {{product_information.discount_price}}</h2>
+                    {% else %}
+                    <h2>$ {{product_information.price}}</h2>
+                    {%endif%}
+                    <ul class="list">
+                        <li><a class="active" href="{% url 'mainapp:filter_product' product_information.category.slug %}"><span>{% trans 'Категории' %}:</span> {{product_information.category.name}}</a>
+                        </li>
+
+                    </ul>
+                    <p>{{product_information.short_description}}</p>
+                    <form action="{% url 'cart:cart_add' product_information.id %}" method="post">
+                        {% csrf_token %}
+                        <label for='qty'>{% trans 'Количество' %}:</label>
+                        <div class="product_count">
+
+                            <button class="number-minus" type="button" onclick="this.nextElementSibling.stepDown(); this.nextElementSibling.onchange();"> - </button>
+                            <input type="number" name="quantity" min="0" value="1" readonly>
+                            <button class="number-plus" type="button" onclick="this.previousElementSibling.stepUp(); this.previousElementSibling.onchange();"> + </button>
+
+
+                        </div>
+                        <button class="button primary-btn" type="submit">{% trans 'Купить' %}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--================End Single Product Area =================-->
+
+<!--================Product Description Area =================-->
+<section class="product_description_area">
+    <div class="container">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                   aria-selected="true">{% trans 'Описание Товара' %}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                   aria-controls="profile" aria-selected="false">{% trans 'Спецификации товара' %}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
+                   aria-controls="contact" aria-selected="false">{% trans 'Коментарии к товару' %}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" id="review-tab" data-toggle="tab" href="#review" role="tab"
+                   aria-controls="review" aria-selected="false">{% trans 'Отзывы и оценки товару' %}</a>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <p>{{product_information.full_description}}</p>
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <h5>{% trans 'Ширина' %}</h5>
+                            </td>
+                            <td>
+                                <h5>{{product_information.width}}</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h5>{% trans 'Высота' %}</h5>
+                            </td>
+                            <td>
+                                <h5>{{product_information.height}}</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h5>{% trans 'Проверка качества' %}</h5>
+                            </td>
+                            <td>
+                                {% if product_information.quality_checking %}
+                                <h5>{% trans 'Да' %}</h5>
+                                {% else %}
+                                <h5>{% trans 'Нет' %}</h5>
+                                {% endif %}
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h5>{% trans 'Гарантия' %}</h5>
+                            </td>
+                            <td>
+                                <h5>{{product_information.guarantee}}</h5>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="comment_list">
+                            {%for guest_review in guest_review_views%}
+                            {% if guest_review.is_public %}
+                            <div class="review_item">
+                                <div class="media">
+                                    <div class="d-flex">
+                                        <img src="{%static 'img/product/review-1.png'%}" alt="">
+                                    </div>
+                                    <div class="media-body">
+                                        <h4>{{guest_review.name}}</h4>
+                                        <h5>{{guest_review.date}}</h5>
+                                    </div>
+                                </div>
+                                <p>{{guest_review.text}}</p>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="review_box">
+                            <h4>{% trans '' %}Оставить коментарий</h4>
+
+                            <form action="{% url 'mainapp:comment_guest' product_information.category.id product_information.id %}"
+                                  class="row contact_form" method="post" id="contactForm" novalidate="novalidate">
+                                {% csrf_token %}
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input type="hidden" name="product" value="{{ product_information.id }}">
+                                        <input type="hidden" name="is_public" >
+                                        <input type="text" class="form-control" id="name" name="name"
+                                               placeholder="{% trans 'Ваше имя' %}">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" id="email" name="email"
+                                               placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="number" name="tel_number"
+                                               placeholder="{% trans 'Телефон номер' %}">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <textarea class="form-control" name="text" id="message" rows="1"
+                                                  placeholder="{% trans 'Ваше сообщение' %}"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 text-right">
+                                    <button type="submit" value="submit" class="btn primary-btn">{% trans 'Отправить' %}</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade show active" id="review" role="tabpanel" aria-labelledby="review-tab">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="row total_rate">
+                            <div class="col-6">
+                                <div class="box_total">
+                                    <h5>{% trans 'Общий балл' %}</h5>
+                                    <h4>{{ sum_stars }}</h4>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="rating_list">
+                                    <h3>{% trans 'оценки отзывов' %}</h3>
+                                    <ul class="list">
+                                        <li><a href="#">5 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i
+                                                class="fa fa-star"></i><i
+                                                class="fa fa-star"></i><i class="fa fa-star"></i>{{static_stars.5}}</a></li>
+                                        <li><a href="#">4 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i
+                                                class="fa fa-star"></i><i
+                                                class="fa fa-star"></i><i class="fa fa-star"></i>{{static_stars.4}}</a></li>
+                                        <li><a href="#">3 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i
+                                                class="fa fa-star"></i><i
+                                                class="fa fa-star"></i><i class="fa fa-star"></i> {{static_stars.3}}</a></li>
+                                        <li><a href="#">2 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i
+                                                class="fa fa-star"></i><i
+                                                class="fa fa-star"></i><i class="fa fa-star"></i> {{static_stars.2}}</a></li>
+                                        <li><a href="#">1 Star <i class="fa fa-star"></i><i class="fa fa-star"></i><i
+                                                class="fa fa-star"></i><i
+                                                class="fa fa-star"></i><i class="fa fa-star"></i> {{static_stars.1}}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="review_list">
+                            {%for review in review_views%}
+                            {% if review.is_public%}
+                                <div class="review_item">
+                                    <div class="media">
+                                        <div class="d-flex">
+                                            <img src="{% static 'img/product/review-1.png'%}" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <h4>{{review.name}}</h4>
+                                            {% with ''|center:review.stars as range %}
+                                                {% for _ in range %}
+                                                    <i class="fa fa-star"></i>
+                                                {% endfor %}
+                                            {% endwith %}
+                                        </div>
+                                    </div>
+                                        <p>{{ review.text }}</p>
+                                </div>
+                            {% endif %}
+                            {% endfor %}
+
+
+
+
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        {% if request.user.is_authenticated %}
+                        <div class="review_box">
+                            <h4>{% trans 'Оставить отзыв и оценку' %}</h4>
+                            <form action="{% url 'mainapp:comment' product_information.category.id product_information.id %}"
+                                  class="form-contact form-review mt-3" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="product" value="{{ product_information.id }}">
+                                <div class="star-box">
+                                <h4>{% trans 'Ваш поставленный рейтинг:' %}</h4>
+                                <select name="stars" id="stars">
+                                    <option value="5" class="fa fa-star">5 stars</option>
+                                    <option value="4" class="fa fa-star">4 stars</option>
+                                    <option value="3" class="fa fa-star">3 stars</option>
+                                    <option value="2" class="fa fa-star">2 stars</option>
+                                    <option value="1" class="fa fa-star">1 star</option>
+                                </select>
+
+                            </div>
+                                <div class="form-group">
+                                    <input class="form-control" name="name" type="text" placeholder="{% trans 'Имя' %}" required>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" name="email" type="email" placeholder="email"
+                                           required>
+                                </div>
+                                <div class="form-group">
+                                </div>
+                                <div class="form-group">
+                                    <textarea class="form-control different-control w-100" name="text" id="textarea"
+                                              cols="30" rows="5" placeholder="{% trans 'Краткое сообщение' %}"></textarea>
+                                </div>
+                                <div class="form-group text-center text-md-right mt-3">
+                                    <button type="submit" class="button button--active button-review">{% trans 'Отправить' %}</button>
+                                </div>
+                            </form>
+                        </div>
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<section class="related-product-area">
+    <div class="container">
+        <div class="section-intro pb-60px">
+            <p>{% trans 'Популярные товары в Магазине' %}</p>
+            <h2>{% trans 'Давайте' %}<span class="section-intro__style">{% trans 'Глянем' %}</span></h2>
+        </div>
+        <div class="row mt-30">
+            {%for product in product_views %}
+            <div class="col-sm-6 col-xl-3 mb-4 mb-xl-0">
+                <div class="single-search-product-wrapper">
+                    <div class="single-search-product d-flex">
+                        <a href="{% url 'mainapp:single_product' product.category.slug product.pk %}"><img
+                                src="{{product.img.url}}" alt=""></a>
+                        <div class="desc">
+                            <a href="{% url 'mainapp:single_product' product.category.slug product.pk %}" class="title">{{product.name}}</a>
+                            {% if product.discount %}
+                            <div class="price">${{product.discount_price}}</div>
+                            {% else %}
+                            <div class="price">${{product.price}}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!--================ end related Product area =================-->
+
+
+{% include 'footer.html' %}
+<!--================ End footer Area  =================-->
+
+
+</body>
+
+{%endblock%}

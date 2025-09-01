@@ -1,0 +1,67 @@
+{% load static %}
+{% load i18n %}
+
+<footer class="footer">
+        <div class="footer-area">
+            <div class="container">
+                <div class="row section_gap">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-footer-widget tp_widgets">
+                            <h4 class="footer_title large_title">{% trans 'Наша миссия' %}</h4>
+                            {% for main_info in main_information%}
+                            <p>{{main_info.Our_mission}}</p>
+                            {% endfor%}
+                        </div>
+                    </div>
+                    <div class="offset-lg-1 col-lg-2 col-md-6 col-sm-6">
+                        <div class="single-footer-widget tp_widgets">
+                            <h4 class="footer_title">{% trans 'Ссылки по сайту' %}</h4>
+                            <ul class="list">
+                                <li><a href="{% url 'mainapp:index' %}">{% trans 'Главная' %}</a></li>
+                                <li><a href="{% url 'mainapp:catalog' %}">{% trans 'Каталог товаров' %}</a></li>
+                                {% comment %} <li><a href="{% url 'mainapp:blog' %}">{% trans 'Блог' %}</a></li> {% endcomment %}
+                                <li><a href="{% url 'mainapp:login_in' %}">{% trans 'Профиль' %}</a></li>
+                                <li><a href="{% url 'mainapp:contacts' %}">{% trans 'Контакты' %}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="offset-lg-1 col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-footer-widget tp_widgets">
+                            <h4 class="footer_title">{% trans 'Наши контакты' %}</h4>
+                            <div class="ml-40">
+                                {% for main_info in main_information%}
+                                <p class="sm-head">
+                                    <span class="fa fa-location-arrow"></span> {% trans 'Наш Магазин' %}
+                                </p>
+                                <p>{{main_info.address}}</p>
+
+                                <p class="sm-head">
+                                    <span class="fa fa-phone"></span>{% trans ' Номер телефона' %}
+                                </p>
+                                <p>
+                                    +{{main_info.number_phone_1}} <br> +{{main_info.number_phone_2}}
+                                </p>
+
+                                <p class="sm-head">
+                                    <span class="fa fa-envelope"></span>{% trans 'Наша почта' %} 
+                                </p>
+                                <p>
+                                    {{main_info.email}}
+                                </p>
+                                 {% endfor%}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</footer>
+<script src="https://kit.fontawesome.com/2d72bc15a2.js" crossorigin="anonymous"></script>
+<script src="{% static 'vendors/jquery/jquery-3.2.1.min.js'%}"></script>
+    <script src="{% static 'vendors/bootstrap/bootstrap.bundle.min.js'%}"></script>
+    <script src="{% static 'vendors/skrollr.min.js'%}"></script>
+    <script src="{% static 'vendors/owl-carousel/owl.carousel.min.js'%}"></script>
+    <script src="{% static 'vendors/nice-select/jquery.nice-select.min.js'%}"></script>
+    <script src="{% static 'vendors/jquery.ajaxchimp.min.js'%}"></script>
+    <script src="{% static 'vendors/mail-script.js'%}"></script>
+    <script src="{% static 'js/main.js'%}"></script>

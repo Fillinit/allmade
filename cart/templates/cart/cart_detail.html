@@ -1,0 +1,38 @@
+{% load static %}
+{% load i18n %}
+
+{% extends 'wrapper.html' %}
+{% block title %}{% trans 'Корзина' %}{% endblock %}
+{% block content %}
+{% include 'header.html'%}
+<div class="container-fluid">
+    <div class="row">
+        {% include 'blocks/menu.html' %}
+        <div class="col-6">
+            <h1>{% trans 'Корзина' %}</h1>
+            {% for item in cart %}
+            {% with product=item.product %}
+            <h3>{{ product.name }}</h3>
+            <img src="{{ product.img.url }}" alt="" height="100px" width="100px">
+            <p>{% trans 'Цена' %}: {{ pro6duct.price }}</p>
+            <p>{% trans 'Количество' %}: {{ item.quantity }}</p>
+            <p>{% trans 'Всего' %}: {{ item.total_price }}</p>
+            <form action="{% url 'cart:cart_add' product.id %}" METHOD="post">
+                    <input type="number" name="quantity" />
+                    <input type="hidden" name="update" value="True">
+                    <input type="submit" value="{% trans 'Изменить количество' %}" class = 'btn btn-primary' />
+                    {% csrf_token %}
+            </form>
+            <a href="{% url 'cart:cart_remove' product.id %}" class="btn btn-danger">{% trans 'Удалить' %}</a>
+            {% endwith %}
+            {% endfor %}
+            <h3>{% trans 'Общая стоимость' %}</h3>
+            <h3>{{cart.get_total_price}}</h3>
+            <a href="{% url 'cart:cart_clear' %}" class="btn btn-danger">{% trans 'Очистить корзину' %}</a>
+            <a href="{% url 'cart:send_tg_bot' %}" class="btn btn-danger">{% trans 'Отправить заказ' %}</a>
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html'%}
+{% endblock %}

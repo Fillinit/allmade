@@ -1,0 +1,68 @@
+{% load static %}
+{% load i18n %}
+
+<header class="header_area">
+        <div class="main_menu">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="container">
+                    <a class="navbar-brand logo_h" href="{% url 'mainapp:index' %}"><img src="{% static 'img/Group 37 3.png'%}" alt=""></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+                    <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
+                            <li class="nav-item active"><a class="nav-link" href="{% url 'mainapp:index' %}">{% trans 'Главная' %}</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'mainapp:catalog' %}">{% trans 'Каталог товаров' %}</a></li>
+                            {% comment %} <li class="nav-item"><a class="nav-link" href="{% url 'mainapp:blog' %}">{% trans 'Блог' %}</a></li> {% endcomment %}
+                            <li class="nav-item submenu dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{% trans 'Профиль' %}</a>
+                                <ul class="dropdown-menu">
+                                    {% if request.user.is_authenticated %}
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'mainapp:logout' %}">{% trans 'Выйти' %}</a></li>
+                                    {% else %}
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'mainapp:register' %}">{% trans 'Зарегестрироваться' %}</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'mainapp:login_in' %}">{% trans 'Войти в аккаунт' %}</a></li>
+                                    {% endif %}
+
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'cart:favorites' %}">{% trans 'Избраное' %}</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'mainapp:contacts' %}">{% trans 'Контакты' %}</a></li>
+                        </ul>
+
+                        <ul class="nav-shop">
+
+                             <li class="nav-item">
+                                 <form action="{% url 'set_language' %}" method="post">
+                                {% csrf_token %}
+                               <input name="next" type="hidden"  value="{{ redirect_to }}">
+                                 {% get_current_language as LANGUAGE_CODE %}
+                                 {% get_available_languages as LANGUAGES %}
+                                 {% get_language_info_list for LANGUAGES as languages %}
+                                 {% for language in languages %}
+                                 {%if 'ru' in request.path %}
+                                    <input name="language" type="hidden"  value="en">
+                                 {%else%}
+                                    <input name="language" type="hidden"  value="ru">
+                                 {%endif%}
+                                 {% endfor %}
+
+                               <button type="submit" ><i class="fa-solid fa-language"></i></button>
+                            </form>
+                             </li>
+
+
+
+                            <li class="nav-item" ><button><a href="{% url 'cart:favorites' %}"><i class="ti-shopping-cart"></i><span class="nav-shop__circle" >
+                                {{cart_len }}
+                            </span></button> </li>
+                            <li class="nav-item"><a class="button button-header" href="{% url 'cart:buy' %}">{% trans 'Купить сейчас' %}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+</header>
